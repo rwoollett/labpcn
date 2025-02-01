@@ -29,6 +29,7 @@ print("Output on original data")
 p = pcn.pcn(pima[:,:8],pima[:,8:9])
 p.pcntrain(pima[:,:8],pima[:,8:9],0.25,100)
 p.confmat(pima[:,:8],pima[:,8:9])
+print("------------------")
 
 # Various preprocessing steps
 #cap the maxium number of times pregnant to 8
@@ -47,8 +48,9 @@ pima[:,:8] = pima[:,:8]-pima[:,:8].mean(axis=0)
 pima[:,:8] = pima[:,:8]/pima[:,:8].var(axis=0)
 
 
-#print pima.mean(axis=0)
-#print pima.var(axis=0)
+print ("mean",pima[:,:8]-pima[:,:8].mean(axis=0))
+print ("var",pima.var(axis=0))
+print ("var",pima[:,:8]/pima[:,:8].var(axis=0))
 #print pima.max(axis=0)
 #print pima.min(axis=0)
 

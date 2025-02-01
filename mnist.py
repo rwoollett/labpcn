@@ -15,7 +15,7 @@ train_set, valid_set, test_set = pickle.load(f, encoding='bytes')
 f.close()
 
 #lets plot the first digit in the training set
-plt.imshow(np.reshape(train_set[0][1,:],[28,28]))
+plt.imshow(np.reshape(train_set[0][200,:],[28,28]))
 print("The correct digit for the first image in the train set is :", train_set[1][0])
 
 nread = 200
@@ -35,6 +35,9 @@ for i in range(nread):
 
 # Train a Perceptron on training set
 p = pcn.pcn(train_in, train_tgt)
+
+inputs_bias = np.concatenate((train_in,-np.ones((np.shape(train_in)[0],1))), axis=1)
+
 p.pcntrain(train_in, train_tgt,0.25,100)
 
 # This isn't really good practice since it's on the training data, 
