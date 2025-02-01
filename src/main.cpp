@@ -3,23 +3,25 @@
 //============================================================================
 #include <iostream>
 #include "Perceptron.h"
+#include "TrainingData.h"
 #include <Eigen/Dense>
 
 using namespace ML;
 using namespace Eigen;
+using namespace ML::DataSet;
 
 int main(int argc, char *argv[])
 {
-  double learningRateETA = 0.25;
 
-  MatrixXd trainInputs(4, 2);
-  trainInputs << 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0;
+  // Comment out traing data functions as require.
+  //trainOr();
+  //trainXOr();
 
-  MatrixXd trainTargets(4, 1);
-  trainTargets << 0.0, 1.0, 1.0, 1.0;
-
-  Perceptron pcn(trainInputs, trainTargets);
-  pcn.pcntrain(trainInputs, trainTargets, learningRateETA, 6);
-
+  // Todo read the pima datafile into the data for pcn 
+  // trainset, targetset,
+  
+  //pima = np.loadtxt('pima-indians-diabetes.data',delimiter=',')
+  //np.shape(pima)
+  
   return EXIT_SUCCESS;
 }
