@@ -12,10 +12,10 @@ int main(int argc, char *argv[])
 {
   double learningRateETA = 0.25;
 
-  Matrix<double, 4, 2> trainInputs;
+  MatrixXd trainInputs(4, 2);
   trainInputs << 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0;
 
-  Matrix<double, 4, 1> trainTargets;
+  MatrixXd trainTargets(4, 1);
   trainTargets << 0.0, 1.0, 1.0, 1.0;
 
   Perceptron pcn(trainInputs, trainTargets);

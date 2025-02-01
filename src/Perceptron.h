@@ -18,11 +18,11 @@ namespace ML
 
   public:
   // weight passed need i0 placement for bias input weights
-    Perceptron(Matrix<double, 4, 2> inputs, Matrix<double, 4, 1> targets);
+    Perceptron(MatrixXd inputs, MatrixXd targets);
 
-    void pcntrain(Matrix<double, 4, 2> inputs, Matrix<double, 4, 1> targets, double eta, int nIterations);
+    void pcntrain(MatrixXd inputs, MatrixXd targets, double eta, int nIterations);
 
-    Matrix<double, 4, 1> pcnfwd(Matrix<double, 4, 3> inputs);
+    MatrixXd pcnfwd(MatrixXd inputs);
   };
 
 }

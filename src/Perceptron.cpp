@@ -12,7 +12,7 @@ constexpr double HasStd = 1.0;
 
 namespace ML
 {
-  Perceptron::Perceptron(Matrix<double, 4, 2> inputs, Matrix<double, 4, 1> targets)
+  Perceptron::Perceptron(MatrixXd inputs, MatrixXd targets)
       : m_nIn{1}, m_nOut{1}, m_nData{0}
   {
 
@@ -26,7 +26,7 @@ namespace ML
 
     if (targets.NumDimensions > 1)
     {
-      m_nOut = inputs.outerSize();
+      m_nOut = targets.outerSize();
     }
 
     m_nData = inputs.innerSize();
@@ -36,19 +36,19 @@ namespace ML
 
     // # Initialise network
     ArrayXd a2 = ArrayXd::Random((m_nIn + 1) * m_nOut);
-    m_weights.resize(m_nIn + 1, m_nOut);
-    m_weights <<  a2 * (0.1 - 0.05);
+    m_weights = MatrixXd(m_nIn + 1, m_nOut);
+    m_weights << a2 * (0.1 - 0.05);
 
     std::cout << "random weights in network initialized: " << m_weights << std::endl;
   }
 
-  void Perceptron::pcntrain(Matrix<double, 4, 2> inputs, Matrix<double, 4, 1> targets, double eta, int nIterations)
+  void Perceptron::pcntrain(MatrixXd inputs, MatrixXd targets, double eta, int nIterations)
   {
-    Matrix<double, 4, 1> biasInput;
+    MatrixXd biasInput(m_nData, m_nOut);
     biasInput << -1.0, -1.0, -1.0, -1.0;
-    Matrix<double, 4, 3> inputsWithBiasEntry;
-    inputsWithBiasEntry.block(0, 0, 4, 2) << inputs;
-    inputsWithBiasEntry.col(2).tail(4) << biasInput; //-1, -1, -1, -1;
+    MatrixXd inputsWithBiasEntry(m_nData, m_nIn + 1);
+    inputsWithBiasEntry.block(0, 0, m_nData, m_nIn) << inputs;
+    inputsWithBiasEntry.col(m_nIn).tail(m_nData) << biasInput; //-1, -1, -1, -1;
 
     std::cout << "train inputs: " << std::endl
               << inputs << std::endl;
@@ -59,7 +59,7 @@ namespace ML
 
     for (int i = 0; i < nIterations; i++)
     {
-      Matrix<double, 4, 1> thresholdactivations = pcnfwd(inputsWithBiasEntry); 
+      MatrixXd thresholdactivations = pcnfwd(inputsWithBiasEntry);
       std::cout << "Threshold activations at iter:" << i << " " << "\n"
                 << thresholdactivations << std::endl;
       auto transposeInputs = inputsWithBiasEntry.transpose();
@@ -90,21 +90,24 @@ namespace ML
   std::cout << "Complete activation: " << activations << std::endl;
 
   */
-  Matrix<double, 4, 1> Perceptron::pcnfwd(Matrix<double, 4, 3> inputs)
+  MatrixXd Perceptron::pcnfwd(MatrixXd inputs)
   {
-    Eigen::ArrayXXd a(4, 1);
+    Eigen::ArrayXXd a(m_nData, m_nOut);
     a.fill(1.0);
-    Eigen::ArrayXXd b(4, 1);
+    Eigen::ArrayXXd b(m_nData, m_nOut);
     b.fill(0);
     // We use matrix multiplication instead of seperating into vectors and using dot product to build up the mtrix for
     // activations for neurons. It is what is happening with that dot method to get sum product of two vectors.
     // We can use matrix mult, only when inner sizes are the same
-    Matrix<double, 4, 1> Nresults{inputs * m_weights};
-    // auto Nresults{inputs * weights};
+    MatrixXd Nresults(m_nData, m_nOut); // = inputs * m_weights;
+    auto res = inputs * m_weights;
+    Nresults << res;
+    // Matrix<double, 4, 1> Nresults{inputs * m_weights};
+
     std::cout << "inputs * weights: " << std::endl
               << Nresults << std::endl;
 
-/////////
+    /////////
     // Matrix<double, 4, 1> activations;
     // for (int i = 0; i < inputs.innerSize(); i++)
     // {
