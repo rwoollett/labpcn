@@ -2,40 +2,25 @@
 
 #include "Perceptron.h"
 #include <Eigen/Dense>
+#include <iostream>
 
 using namespace ML;
 using namespace Eigen;
 
 namespace ML::DataSet
 {
-  void trainOr()
-  {
-    double learningRateETA = 0.25;
+  void trainOr();
 
-    MatrixXd trainInputs(4, 2);
-    trainInputs << 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0;
+  void trainXOr();
 
-    MatrixXd trainTargets(4, 1);
-    trainTargets << 0.0, 1.0, 1.0, 1.0;
+  MatrixXd readDataFile(std::string fileName);
 
-    Perceptron pcn(trainInputs, trainTargets);
-    pcn.pcntrain(trainInputs, trainTargets, learningRateETA, 6);
-  }
+  std::vector<double> splitStringToDouble(const std::string &str, char delimiter);
 
-  void trainXOr()
-  {
-    double learningRateETA = 0.25;
+  std::string stripFileLine(std::string line);
 
-    MatrixXd trainInputs(4, 3);
-    trainInputs << 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0;
-    // MatrixXd trainInputs(4, 2);
-    // trainInputs << 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0;
+  bool isCommentLine(std::string line);
 
-    MatrixXd trainTargets(4, 1);
-    trainTargets << 0.0, 1.0, 1.0, 0.0;
-
-    Perceptron pcn(trainInputs, trainTargets);
-    pcn.pcntrain(trainInputs, trainTargets, learningRateETA, 14);
-  }
+  std::tuple<int, int> readDataShapeFromFile(std::string fileName);
 
 }

@@ -25,6 +25,7 @@ find_package(OpenMP REQUIRED)
 
 add_executable(Perceptron
         src/main.cpp
+        src/TrainingData.cpp
         src/TrainingData.h
         src/Parallel.cpp
         src/Parallel.h
@@ -55,6 +56,7 @@ target_compile_definitions(Perceptron PUBLIC _GLIBCXX_PARALLEL)
 target_include_directories(
   Perceptron PRIVATE
     $<BUILD_INTERFACE:${Perceptron_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE:${Perceptron_SOURCE_DIR}/src>
     $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/eigen-src>
     $<INSTALL_INTERFACE:include>
 )
