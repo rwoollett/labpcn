@@ -10,6 +10,9 @@ using namespace Eigen;
 
 namespace ML::DataSet
 {
+
+  void trainPima();
+  
   void trainOr();
 
   void trainXOr();
