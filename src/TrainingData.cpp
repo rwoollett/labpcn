@@ -17,6 +17,8 @@ namespace ML::DataSet
 
     Perceptron pcn(trainInputs, trainTargets);
     pcn.pcntrain(trainInputs, trainTargets, learningRateETA, 6);
+
+    pcn.confmat(trainInputs, trainTargets);
   }
 
   void trainXOr()
@@ -33,6 +35,8 @@ namespace ML::DataSet
 
     Perceptron pcn(trainInputs, trainTargets);
     pcn.pcntrain(trainInputs, trainTargets, learningRateETA, 14);
+
+    pcn.confmat(trainInputs, trainTargets);
   }
 
   MatrixXd readDataFile(std::string fileName)

@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pcn
 
-pima = np.loadtxt('pima-indians-diabetes.data',delimiter=',')
+pima = np.loadtxt('./dataset/pima-indians-diabetes.data',delimiter=',')
 
 # Plot the first and second values for the two classes
 indices0 = np.where(pima[:,8]==0)

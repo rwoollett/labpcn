@@ -5,6 +5,12 @@
 
 using namespace Eigen;
 
+#ifdef NDEBUG
+#define D(x)
+#else
+#define D(x) x
+#endif
+
 namespace ML
 {
 
@@ -23,6 +29,8 @@ namespace ML
     void pcntrain(MatrixXd inputs, MatrixXd targets, double eta, int nIterations);
 
     MatrixXd pcnfwd(MatrixXd inputs);
+
+    void confmat(MatrixXd inputs, MatrixXd targets);
   };
 
 }

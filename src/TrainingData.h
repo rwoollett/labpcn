@@ -3,6 +3,7 @@
 #include "Perceptron.h"
 #include <Eigen/Dense>
 #include <iostream>
+#include <vector>
 
 using namespace ML;
 using namespace Eigen;
