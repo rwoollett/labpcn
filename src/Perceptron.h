@@ -23,7 +23,7 @@ namespace ML
     int m_threshold{0};
 
   public:
-  // weight passed need i0 placement for bias input weights
+    // weight passed need i0 placement for bias input weights
     Perceptron(MatrixXd inputs, MatrixXd targets);
 
     void pcntrain(MatrixXd inputs, MatrixXd targets, double eta, int nIterations);
@@ -31,6 +31,8 @@ namespace ML
     MatrixXd pcnfwd(MatrixXd inputs);
 
     void confmat(MatrixXd inputs, MatrixXd targets);
+
+    ArrayXd indiceMax(MatrixXd matric, int nData, int recordLength);
   };
 
 }

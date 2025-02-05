@@ -121,9 +121,23 @@ namespace ML
       // 	outputs = np.argmax(outputs,1)
       // 	targets = np.argmax(targets,1)
       // TODO
-      // The index along the 1 axis (left to right) where the max number is :
-      // so if 4 by 2 the result will 1,3 where the largest number is in the 
     }
+
+    std::cout << "network size: no. of classes " << nClasses << std::endl
+              << " nIn: " << m_nIn << ", nOut:" << m_nOut << ", nData: " << m_nData << std::endl;
+
+    std::cout << "Outputs before indicemax: " << std::endl
+              << outputs << std::endl;
+    std::cout << "Targets before IndiceMax: " << std::endl
+              << targets << std::endl;
+    std::cout << "outputs size: " << outputs.innerSize() << " " << outputs.outerSize() << " " << outputs.size() << std::endl;
+    MatrixXd outputs2 = indiceMax(outputs, m_nData, m_nOut);
+    std::cout << "targets size: " << targets.innerSize() << " " << targets.outerSize() << " " << targets.size() << std::endl;
+    MatrixXd targets2 = indiceMax(targets, m_nData, m_nOut);
+    std::cout << "Outputs As IndiceMax: " << std::endl
+              << outputs2 << std::endl;
+    std::cout << "Targets As IndiceMax: " << std::endl
+              << targets2 << std::endl;
 
     MatrixXd cm(nClasses, nClasses);
     cm.fill(0);
@@ -148,8 +162,45 @@ namespace ML
     }
   }
 
-
-  
+  ArrayXd Perceptron::indiceMax(MatrixXd matrix, int nData, int recordLength)
+  {
+    ArrayXd indices(nData);
+    if (nData == 1)
+    {
+      ArrayXd Nrecord = matrix.reshaped();
+      auto result = std::max_element(Nrecord.begin(), Nrecord.end());
+      // TODO: From result to end if find same value mark as -1
+      auto duplicateresult = std::max_element(result + 1, Nrecord.end());
+      if (duplicateresult != Nrecord.end() && *result == *duplicateresult)
+      {
+        indices(0) = -1;
+      }
+      else
+      {
+        indices(0) = std::distance(Nrecord.begin(), result);
+      }
+    }
+    else
+    {
+      for (int i = 0; i < nData; i++)
+      {
+        MatrixXd mat = matrix(seqN(i, 1), seqN(0, recordLength));
+        ArrayXd Nrecord = mat.reshaped();
+        auto result = std::max_element(Nrecord.begin(), Nrecord.end());
+        // TODO: From result to end if find same value mark as -1
+        auto duplicateresult = std::max_element(result + 1, Nrecord.end());
+        if (duplicateresult != Nrecord.end() && *result == *duplicateresult)
+        {
+          indices(i) = -1;
+        }
+        else
+        {
+          indices(i) = std::distance(Nrecord.begin(), result);
+        }
+      }
+    }
+    return indices;
+  }
 
 }
 
