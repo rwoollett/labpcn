@@ -42,7 +42,8 @@ pima[np.where((pima[:,7]>40) & (pima[:,7]<=50)),7] = 3
 pima[np.where((pima[:,7]>50) & (pima[:,7]<=60)),7] = 4
 pima[np.where(pima[:,7]>60),7] = 5
 
-
+#data = (data-data.mean(axis=0))/data.var(axis=0)
+#targets = (targets- targets.mean(axis=0))/targets.var(axis=0)
 #normalize all features
 pima[:,:8] = pima[:,:8]-pima[:,:8].mean(axis=0)
 pima[:,:8] = pima[:,:8]/pima[:,:8].var(axis=0)

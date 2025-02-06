@@ -12,7 +12,7 @@ constexpr double HasStd = 1.0;
 
 namespace ML
 {
-  Perceptron::Perceptron(MatrixXd inputs, MatrixXd targets)
+  Perceptron::Perceptron(const MatrixXd &inputs, const MatrixXd &targets)
       : m_nIn{1}, m_nOut{1}, m_nData{0}
   {
 
@@ -43,7 +43,7 @@ namespace ML
     std::cout << "random weights in network initialized: " << m_weights << std::endl;
   }
 
-  void Perceptron::pcntrain(MatrixXd inputs, MatrixXd targets, double eta, int nIterations)
+  void Perceptron::pcntrain(const MatrixXd &inputs, const MatrixXd &targets, double eta, int nIterations)
   {
     MatrixXd biasInput(m_nData, 1);
     biasInput.fill(-1.0);
@@ -72,7 +72,7 @@ namespace ML
     }
   }
 
-  MatrixXd Perceptron::pcnfwd(MatrixXd inputs)
+  MatrixXd Perceptron::pcnfwd(const MatrixXd &inputs)
   {
     Eigen::ArrayXXd a(m_nData, m_nOut);
     a.fill(1.0);
@@ -92,7 +92,7 @@ namespace ML
     return (Nresults.array() > m_threshold).select(a, b);
   }
 
-  void Perceptron::confmat(MatrixXd inputs, MatrixXd targets)
+  void Perceptron::confmat(const MatrixXd &inputs, MatrixXd targets)
   {
     MatrixXd biasInput(m_nData, 1);
     biasInput.fill(-1.0);
@@ -160,7 +160,7 @@ namespace ML
     }
   }
 
-  ArrayXd Perceptron::indiceMax(MatrixXd matrix, int nData, int recordLength)
+  ArrayXd Perceptron::indiceMax(const MatrixXd &matrix, int nData, int recordLength)
   {
     ArrayXd indices(nData);
     if (nData == 1)

@@ -13,22 +13,37 @@ namespace ML::DataSet
     MatrixXd dataSet = readDataFile("../dataset/pima-indians-diabetes.data");
     std::cout << dataSet.innerSize() << " " << dataSet.outerSize() << std::endl;
 
-    MatrixXd trainTargets = dataSet(seqN(1, dataSet.innerSize() / 2, 2), last);
-    MatrixXd testTargets = dataSet(seqN(0, dataSet.innerSize() / 2, 2), last);
-    std::cout << trainTargets.innerSize() << " " << trainTargets.outerSize() << std::endl;
-    std::cout << testTargets.innerSize() << " " << testTargets.outerSize() << std::endl;
+    // Do standardise on data
+    // Just get first 50 records to do standisize
+    MatrixXd trainToStandardize = dataSet(seqN(1, 50, 2), seqN(0, dataSet.outerSize() - 1));
 
-    MatrixXd trainInputs = dataSet(seqN(1, dataSet.innerSize() / 2, 2), seqN(0, dataSet.outerSize() - 1));
-    MatrixXd testInputs = dataSet(seqN(0, dataSet.innerSize() / 2, 2), seqN(0, dataSet.outerSize() - 1));
-    std::cout << trainInputs.innerSize() << " " << trainInputs.outerSize() << std::endl;
-    std::cout << testInputs.innerSize() << " " << testInputs.outerSize() << std::endl;
+    std::cout << "trainToStandardize" << std::endl;
+    std::cout << trainToStandardize << std::endl;
 
-    // //  # Perceptron training on the original pima dataset
-    double learningRateETA = 0.25;
-    Perceptron pcn(trainInputs, trainTargets);
-    pcn.pcntrain(trainInputs, trainTargets, learningRateETA, 100);
+    // define standardize col
+    MatrixXd result = standardizeColumn(trainToStandardize.col(0), 50);
+    std::cout << result.transpose() << std::endl;
 
-    pcn.confmat(testInputs, testTargets);
+    trainToStandardize.col(0) = result;
+    std::cout << "trainToStandardize done at col(0)" << std::endl;
+    std::cout << trainToStandardize << std::endl;
+
+    //  MatrixXd trainTargets = dataSet(seqN(1, dataSet.innerSize() / 2, 2), last);
+    //  MatrixXd testTargets = dataSet(seqN(0, d  ataSet.innerSize() / 2, 2), last);
+    //  std::cout << trainTargets.innerSize() << " " << trainTargets.outerSize() << std::endl;
+    //  std::cout << testTargets.innerSize() << " " << testTargets.outerSize() << std::endl;
+
+    // MatrixXd trainInputs = dataSet(seqN(1, dataSet.innerSize() / 2, 2), seqN(0, dataSet.outerSize() - 1));
+    // MatrixXd testInputs = dataSet(seqN(0, dataSet.innerSize() / 2, 2), seqN(0, dataSet.outerSize() - 1));
+    // std::cout << trainInputs.innerSize() << " " << trainInputs.outerSize() << std::endl;
+    // std::cout << testInputs.innerSize() << " " << testInputs.outerSize() << std::endl;
+
+    // // //  # Perceptron training on the original pima dataset
+    // double learningRateETA = 0.25;
+    // Perceptron pcn(trainInputs, trainTargets);
+    // pcn.pcntrain(trainInputs, trainTargets, learningRateETA, 100);
+
+    // pcn.confmat(testInputs, testTargets);
   }
 
   void testTrainNClasses()
@@ -40,17 +55,21 @@ namespace ML::DataSet
     MatrixXd trainTargets(20, 10);
     trainTargets.fill(0.0);
 
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 10; i++)
+    {
       trainInputs(i, i) = 1.0;
     }
-    for (int i = 0; i < 10; i++) {
-      trainInputs(i+10, i) = 1.0;
+    for (int i = 0; i < 10; i++)
+    {
+      trainInputs(i + 10, i) = 1.0;
     }
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 10; i++)
+    {
       trainTargets(i, i) = 1.0;
     }
-    for (int i = 0; i < 10; i++) {
-      trainTargets(i+10, i) = 1.0;
+    for (int i = 0; i < 10; i++)
+    {
+      trainTargets(i + 10, i) = 1.0;
     }
 
     std::cout << "Train inputs" << std::endl;
@@ -208,5 +227,67 @@ namespace ML::DataSet
     return {countSet, inputCount};
   }
 
+  MatrixXd standardizeColumn(const MatrixXd &col, int nData)
+  {
+    MatrixXd workCol(nData, 1);
+    workCol << col;
+    double colMean = workCol.mean();
 
+    std::cout << "Mean: " << std::endl;
+    std::cout << colMean << std::endl;
+    // Find variance in col
+
+    double sumCol = workCol.sum();
+
+    std::cout << "sumCol: " << std::endl;
+    std::cout << sumCol << std::endl;
+
+    MatrixXd meanV(50, 1);
+    meanV.fill(colMean);
+    std::cout << workCol.transpose() << std::endl;
+
+    std::cout << "-mean all: " << std::endl;
+    workCol -= meanV;
+    std::cout << workCol.transpose() << std::endl;
+
+    std::cout << "sqrt: " << std::endl;
+    MatrixXd tosqrtd(1, 50);
+    tosqrtd << workCol;
+    std::cout << tosqrtd << std::endl;
+    MatrixXd sqrtd(50, 1);
+    sqrtd = tosqrtd.array().square();
+    std::cout << "sqrtd: " << std::endl;
+    std::cout << sqrtd << std::endl;
+
+    double sumSquares = sqrtd.sum();
+    std::cout << "sumSquares: " << std::endl;
+    std::cout << sumSquares << std::endl;
+
+    std::cout << "variance of col(0): " << std::endl;
+    double variance = sumSquares / 49;
+    std::cout << variance << std::endl;
+
+    // double squaredNorm = trainToStandardize.col(0).squaredNorm();
+    // std::cout << "SquaredNorm: " << std::endl;
+    // std::cout << squaredNorm << std::endl;
+    std::cout << "mean/SquaredNorm: " << std::endl;
+    std::cout << colMean / variance << std::endl;
+
+    MatrixXd meanVariance(50, 1);
+    meanVariance.fill(variance);
+    MatrixXd toDivVar(50, 1);
+    toDivVar = workCol / variance;
+    std::cout << "with worked div variance: " << std::endl;
+    std::cout << toDivVar.transpose() << std::endl;
+
+    std::cout << "original col(0): " << std::endl;
+    std::cout << col.transpose() << std::endl;
+    //    trainToStandardize.col(0) << toDivVar;
+    //    std::cout << "standardirized col(0) " << std::endl;
+    //    std::cout << trainToStandardize.col(0).transpose() << std::endl;
+    // std::cout << "with col(0) normalize: " << std::endl;
+    // col.normalize();
+    std::cout << col.transpose() << std::endl;
+    return toDivVar;
+  }
 }

@@ -24,15 +24,15 @@ namespace ML
 
   public:
     // weight passed need i0 placement for bias input weights
-    Perceptron(MatrixXd inputs, MatrixXd targets);
+    Perceptron(const MatrixXd &inputs, const MatrixXd &targets);
 
-    void pcntrain(MatrixXd inputs, MatrixXd targets, double eta, int nIterations);
+    void pcntrain(const MatrixXd &inputs, const MatrixXd &targets, double eta, int nIterations);
 
-    MatrixXd pcnfwd(MatrixXd inputs);
+    MatrixXd pcnfwd(const MatrixXd &inputs);
 
-    void confmat(MatrixXd inputs, MatrixXd targets);
+    void confmat(const MatrixXd &inputs, MatrixXd targets);
 
-    ArrayXd indiceMax(MatrixXd matric, int nData, int recordLength);
+    ArrayXd indiceMax(const MatrixXd &matrix, int nData, int recordLength);
   };
 
 }

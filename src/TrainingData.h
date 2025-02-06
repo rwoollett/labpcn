@@ -29,4 +29,6 @@ namespace ML::DataSet
 
   std::tuple<int, int> readDataShapeFromFile(std::string fileName);
 
+  MatrixXd standardizeColumn(const MatrixXd &col, int nData);
+
 }
