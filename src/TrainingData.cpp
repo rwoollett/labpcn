@@ -10,7 +10,16 @@ namespace ML::DataSet
   {
     // Todo read the pima datafile into the data for pcn
     // trainset, targetset,
-    MatrixXd dataSet = readDataFile("../dataset/pima-indians-diabetes.data");
+    MatrixXd dataSet;
+    
+    try {
+      dataSet = readDataFile("../dataset/pima-indians-diabetes.data");
+
+    } catch (std::string e) {
+      std::cout << "trainPima error: " << e << std::endl;
+      return;
+    }
+
     std::cout << dataSet.innerSize() << " " << dataSet.outerSize() << std::endl;
 
     // Do standardise on data
@@ -133,6 +142,9 @@ namespace ML::DataSet
     // int recordLength;
 
     auto [dataSize, recordLength] = readDataShapeFromFile(fileName);
+    if (dataSize == 0) {
+      throw std::string("No data found at ") + fileName;
+    }
     std::cout << "Data file size: " << dataSize << " " << recordLength << std::endl;
 
     dataSet = MatrixXd(dataSize, recordLength);
