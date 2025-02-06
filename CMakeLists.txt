@@ -20,6 +20,17 @@ else()
     add_compile_definitions(USE_EXP_FILESYSTEM)
 endif()
 
+# SET(Boost_USE_STATIC_LIBS ON)
+# set(Boost_USE_DEBUG_LIBS OFF)
+# set(Boost_USE_RELEASE_LIBS ON) 
+# SET(Boost_USE_MULTITHREADED ON)
+# set(Boost_USE_STATIC_RUNTIME ON) 
+# SET(Boost_NO_BOOST_CMAKE ON)
+
+# Find Python
+find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
+find_package(PythonLibs 38 REQUIRED)
+find_package(Boost 1.71 REQUIRED COMPONENTS python38)
 find_package(Threads)
 find_package(OpenMP REQUIRED)
 
@@ -57,6 +68,8 @@ target_include_directories(
   Perceptron PRIVATE
     $<BUILD_INTERFACE:${Perceptron_SOURCE_DIR}/include>
     $<BUILD_INTERFACE:${Perceptron_SOURCE_DIR}/src>
+    $<BUILD_INTERFACE:${BOOST_INCLUDE_DIR}>
+    $<BUILD_INTERFACE:${PYTHON_INCLUDE_DIRS}>
     $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/eigen-src>
     $<INSTALL_INTERFACE:include>
 )
@@ -64,6 +77,8 @@ target_link_libraries(
   Perceptron PRIVATE 
     Threads::Threads
     OpenMP::OpenMP_CXX
+    ${Boost_LIBRARIES} ${Python3_LIBRARIES}
+    
 )
 
 include(GNUInstallDirs)

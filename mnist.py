@@ -10,7 +10,7 @@ import pcn
 import pickle, gzip
 
 # Read the dataset in (code from sheet)
-f = gzip.open('mnist.pkl.gz','rb')
+f = gzip.open('./dataset/mnist.pkl.gz','rb')
 train_set, valid_set, test_set = pickle.load(f, encoding='bytes')
 f.close()
 

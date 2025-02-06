@@ -31,6 +31,39 @@ namespace ML::DataSet
     pcn.confmat(testInputs, testTargets);
   }
 
+  void testTrainNClasses()
+  {
+    double learningRateETA = 0.25;
+
+    MatrixXd trainInputs(20, 10);
+    trainInputs.fill(0.0);
+    MatrixXd trainTargets(20, 10);
+    trainTargets.fill(0.0);
+
+    for (int i = 0; i < 10; i++) {
+      trainInputs(i, i) = 1.0;
+    }
+    for (int i = 0; i < 10; i++) {
+      trainInputs(i+10, i) = 1.0;
+    }
+    for (int i = 0; i < 10; i++) {
+      trainTargets(i, i) = 1.0;
+    }
+    for (int i = 0; i < 10; i++) {
+      trainTargets(i+10, i) = 1.0;
+    }
+
+    std::cout << "Train inputs" << std::endl;
+    std::cout << trainInputs << std::endl;
+    std::cout << "Train targets" << std::endl;
+    std::cout << trainTargets << std::endl;
+
+    Perceptron pcn(trainInputs, trainTargets);
+    pcn.pcntrain(trainInputs, trainTargets, learningRateETA, 6);
+
+    pcn.confmat(trainInputs, trainTargets);
+  }
+
   void trainOr()
   {
     double learningRateETA = 0.25;
@@ -174,4 +207,6 @@ namespace ML::DataSet
 
     return {countSet, inputCount};
   }
+
+
 }

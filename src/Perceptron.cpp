@@ -35,16 +35,17 @@ namespace ML
               << " nIn: " << m_nIn << ", nOut:" << m_nOut << ", nData: " << m_nData << std::endl;
 
     // # Initialise network
-    ArrayXd a2 = ArrayXd::Random((m_nIn + 1) * m_nOut);
+    MatrixXd mat2 = MatrixXd::Random(m_nIn + 1, m_nOut) * (0.1 - 0.05);
+    // ArrayXd a2 = ArrayXd::Random((m_nIn + 1) * m_nOut) * (0.1 - 0.05);
     m_weights = MatrixXd(m_nIn + 1, m_nOut);
-    m_weights << a2 * (0.1 - 0.05);
+    m_weights << mat2;
 
     std::cout << "random weights in network initialized: " << m_weights << std::endl;
   }
 
   void Perceptron::pcntrain(MatrixXd inputs, MatrixXd targets, double eta, int nIterations)
   {
-    MatrixXd biasInput(m_nData, m_nOut);
+    MatrixXd biasInput(m_nData, 1);
     biasInput.fill(-1.0);
     MatrixXd inputsWithBiasEntry(m_nData, m_nIn + 1);
     inputsWithBiasEntry.block(0, 0, m_nData, m_nIn) << inputs;
@@ -93,7 +94,7 @@ namespace ML
 
   void Perceptron::confmat(MatrixXd inputs, MatrixXd targets)
   {
-    MatrixXd biasInput(m_nData, m_nOut);
+    MatrixXd biasInput(m_nData, 1);
     biasInput.fill(-1.0);
     MatrixXd inputsWithBiasEntry(m_nData, m_nIn + 1);
     inputsWithBiasEntry.block(0, 0, m_nData, m_nIn) << inputs;
@@ -117,27 +118,24 @@ namespace ML
     else
     {
       // 1-of-N enoding
-      // 	# 1-of-N encoding
-      // 	outputs = np.argmax(outputs,1)
-      // 	targets = np.argmax(targets,1)
-      // TODO
+      D(std::cout << "network size: no. of classes " << nClasses << std::endl
+                << " nIn: " << m_nIn << ", nOut:" << m_nOut << ", nData: " << m_nData << std::endl;)
+      D(std::cout << "Outputs before indicemax: " << std::endl
+                << outputs << std::endl;)
+      D(std::cout << "Targets before IndiceMax: " << std::endl
+                << targets << std::endl;)
+
+      outputs = indiceMax(outputs, m_nData, m_nOut);
+      targets = indiceMax(targets, m_nData, m_nOut);
+      D(std::cout << "Outputs As IndiceMax: " << std::endl
+                << outputs << std::endl;)
+      D(std::cout << "Targets As IndiceMax: " << std::endl
+                << targets << std::endl;)
+      a = ArrayXXd(m_nData, 1);
+      a.fill(1.0);
+      b = ArrayXXd(m_nData, 1);
+      b.fill(0);
     }
-
-    std::cout << "network size: no. of classes " << nClasses << std::endl
-              << " nIn: " << m_nIn << ", nOut:" << m_nOut << ", nData: " << m_nData << std::endl;
-
-    std::cout << "Outputs before indicemax: " << std::endl
-              << outputs << std::endl;
-    std::cout << "Targets before IndiceMax: " << std::endl
-              << targets << std::endl;
-    std::cout << "outputs size: " << outputs.innerSize() << " " << outputs.outerSize() << " " << outputs.size() << std::endl;
-    MatrixXd outputs2 = indiceMax(outputs, m_nData, m_nOut);
-    std::cout << "targets size: " << targets.innerSize() << " " << targets.outerSize() << " " << targets.size() << std::endl;
-    MatrixXd targets2 = indiceMax(targets, m_nData, m_nOut);
-    std::cout << "Outputs As IndiceMax: " << std::endl
-              << outputs2 << std::endl;
-    std::cout << "Targets As IndiceMax: " << std::endl
-              << targets2 << std::endl;
 
     MatrixXd cm(nClasses, nClasses);
     cm.fill(0);

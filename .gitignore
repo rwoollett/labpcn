@@ -6,6 +6,9 @@ __pycache__
 mnist.pkl.gz
 lab4.pdf
 
+dataset/mnist.pkl
+dataset/mnist.pkl.gz
+
 # Dependencies
 /.deps
 /.dirstamp

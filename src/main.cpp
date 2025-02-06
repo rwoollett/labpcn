@@ -7,13 +7,15 @@
 
 using namespace ML::DataSet;
 
+
 int main(int argc, char *argv[])
 {
-  // Comment out traing data functions as require.
-  trainPima();
 
+  //  Comment out traing data functions as require.
+  trainPima();
   //trainOr();
-  //trainXOr();
+  //testTrainNClasses();
+  // trainXOr();
 
   return EXIT_SUCCESS;
 }

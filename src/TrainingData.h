@@ -13,6 +13,8 @@ namespace ML::DataSet
 
   void trainPima();
   
+  void testTrainNClasses();
+  
   void trainOr();
 
   void trainXOr();
